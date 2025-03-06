@@ -10,6 +10,9 @@ router
   .get('/', (req: Request, res: Response, next: NextFunction) =>
     livroController.getAll(req, res, next),
   )
+  .get('/busca', (req: Request, res: Response, next: NextFunction) =>
+    livroController.listarLivrosPorEditora(req, res, next),
+  )
   .get('/:id', (req: Request, res: Response, next: NextFunction) =>
     livroController.getById(req, res, next),
   )
@@ -18,9 +21,6 @@ router
   )
   .delete('/:id', (req: Request, res: Response, next: NextFunction) =>
     livroController.deleteById(req, res, next),
-  )
-  .get('/busca', (req: Request, res: Response, next: NextFunction) =>
-    livroController.listarLivrosPorEditora(req, res, next),
   );
 
 export default router;

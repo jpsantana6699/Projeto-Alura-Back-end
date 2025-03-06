@@ -25,8 +25,8 @@ class LivroController extends Controller<Livro> {
       const livros = await Livro.findAll({
         where: { editora },
         include: [
-          { model: Autor, attributes: ['nome'] },
-          { model: Categoria, attributes: ['nome', 'descricao'] },
+          { association: 'autor', attributes: ['nome'] },
+          { association: 'categoria', attributes: ['nome', 'descricao'] },
         ],
       });
 
