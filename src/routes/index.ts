@@ -1,12 +1,22 @@
-import express from 'express';
-import authRoutes from './authRoutes';
+import express, { Express } from 'express';
+import authRouter from './authRouter';
+import authenticationMiddleware from '../middlewares/authMiddleware';
+import errorsMiddleware from '../middlewares/errorMiddleware';
+import notFoundMiddleware from '../middlewares/notFoundMiddleware';
+import userRouter from './userRouter';
 
-const routes = (app: express.Application) => {
-  app.route('/').get((req, res) => {
-    res.status(200).send('API Express');
-  });
+const routes = (app: Express) => {
+  app.use(express.json());
 
-  app.use('/auth', authRoutes);
+  app.use('/api/v1/auth/login', authRouter);
+
+  app.use(authenticationMiddleware);
+
+  app.use('/api/v1/users', userRouter);
+
+  app.use(notFoundMiddleware);
+
+  app.use(errorsMiddleware);
 };
 
 export default routes;

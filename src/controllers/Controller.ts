@@ -1,7 +1,7 @@
 import { CreationAttributes, Includeable, Model, ModelStatic } from 'sequelize';
 import { NextFunction, Request, Response } from 'express';
 import NotFoundError from '../errors/NotFoundError';
-import Services from '../services.ts/Services';
+import Services from '../services/Services';
 
 class Controller<T extends Model> {
   private service: Services<T>;

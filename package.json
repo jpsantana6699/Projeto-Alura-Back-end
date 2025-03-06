@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "keywords": [],
-  "author": "Lev Negócios",
+  "author": "João Pedro Santana",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

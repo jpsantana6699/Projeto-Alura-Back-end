@@ -4,7 +4,10 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from 'sequelize';
+import PermissionModel from './PermissionModel';
+import RoleModel from './RoleModel';
 import sequelize from '.';
 
 class UserModel extends Model<
@@ -15,6 +18,8 @@ class UserModel extends Model<
   declare name: string;
   declare email: string;
   declare password: string;
+  declare roles: NonAttribute<RoleModel[]>;
+  declare permissions: NonAttribute<PermissionModel[]>;
   declare isActive: CreationOptional<boolean>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -23,14 +28,15 @@ class UserModel extends Model<
 
 UserModel.init({
   id: {
-    autoIncrement: true,
     field: 'use_id',
-    primaryKey: true,
+    allowNull: false,
     type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
   name: {
-    allowNull: false,
     field: 'use_des_name',
+    allowNull: false,
     type: DataTypes.STRING(80),
     validate: {
       is: {
@@ -44,8 +50,8 @@ UserModel.init({
     },
   },
   email: {
-    allowNull: false,
     field: 'use_des_email',
+    allowNull: false,
     type: DataTypes.STRING(320),
     unique: {
       name: 'tb_users_use_des_email_key',
@@ -61,8 +67,8 @@ UserModel.init({
     },
   },
   password: {
-    allowNull: false,
     field: 'use_des_password',
+    allowNull: false,
     type: DataTypes.STRING(60),
     validate: {
       notNull: {
@@ -71,22 +77,24 @@ UserModel.init({
     },
   },
   isActive: {
-    allowNull: false,
-    defaultValue: true,
     field: 'use_ind_active',
+    allowNull: false,
     type: DataTypes.BOOLEAN,
+    defaultValue: true,
   },
   createdAt: {
     field: 'use_dat_created_at',
+    allowNull: false,
     type: DataTypes.DATE,
   },
   updatedAt: {
-    allowNull: false,
     field: 'use_dat_updated_at',
+    allowNull: false,
     type: DataTypes.DATE,
   },
   deletedAt: {
     field: 'use_dat_deleted_at',
+    allowNull: true,
     type: DataTypes.DATE,
   },
 }, {
