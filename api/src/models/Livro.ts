@@ -1,7 +1,6 @@
 import {
   CreationOptional,
   DataTypes,
-  ForeignKey,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -15,8 +14,8 @@ class LivroModel extends Model<
   InferCreationAttributes<LivroModel>
 > {
   declare id: CreationOptional<number>;
-  declare autorId: ForeignKey<AutorModel['id']>;
-  declare categoriaId: ForeignKey<CategoriaModel['id']>;
+  declare aut_id: number; // Substitui autorId
+  declare cat_id: number; // Substitui categoriaId
   declare titulo: string;
   declare descricao: string;
   declare preco: number;
@@ -35,35 +34,27 @@ LivroModel.init({
     primaryKey: true,
     type: DataTypes.INTEGER,
   },
-  autorId: {
+  aut_id: {
     allowNull: false,
     field: 'aut_id',
     type: DataTypes.INTEGER,
     validate: {
-      notNull: {
-        msg: 'O ID do autor é obrigatório',
-      },
+      notNull: { msg: 'O ID do autor é obrigatório' },
     },
   },
-  categoriaId: {
+  cat_id: {
     allowNull: false,
     field: 'cat_id',
     type: DataTypes.INTEGER,
     validate: {
-      notNull: {
-        msg: 'O ID da categoria é obrigatório',
-      },
+      notNull: { msg: 'O ID da categoria é obrigatório' },
     },
   },
   titulo: {
     allowNull: false,
     field: 'liv_titulo',
     type: DataTypes.STRING(80),
-    validate: {
-      notNull: {
-        msg: 'O título do livro é obrigatório',
-      },
-    },
+    validate: { notNull: { msg: 'O título do livro é obrigatório' } },
   },
   descricao: {
     allowNull: true,
@@ -74,30 +65,20 @@ LivroModel.init({
     allowNull: false,
     field: 'liv_preco',
     type: DataTypes.DECIMAL(10, 2),
-    validate: {
-      notNull: {
-        msg: 'O preço do livro é obrigatório',
-      },
-    },
+    validate: { notNull: { msg: 'O preço do livro é obrigatório' } },
   },
   editora: {
     allowNull: false,
     field: 'liv_editora',
     type: DataTypes.STRING(80),
-    validate: {
-      notNull: {
-        msg: 'A editora do livro é obrigatória',
-      },
-    },
+    validate: { notNull: { msg: 'A editora do livro é obrigatória' } },
   },
   paginas: {
     allowNull: false,
     field: 'liv_paginas',
     type: DataTypes.INTEGER,
     validate: {
-      notNull: {
-        msg: 'O número de páginas do livro é obrigatório',
-      },
+      notNull: { msg: 'O número de páginas do livro é obrigatório' },
     },
   },
   isActive: {
@@ -128,25 +109,10 @@ LivroModel.init({
   paranoid: true,
 });
 
-// Relacionamentos
-LivroModel.belongsTo(AutorModel, {
-  as: 'autor',
-  foreignKey: 'aut_id',
-});
+LivroModel.belongsTo(AutorModel, { as: 'autor', foreignKey: 'aut_id' });
+AutorModel.hasMany(LivroModel, { as: 'livros', foreignKey: 'aut_id' });
 
-AutorModel.hasMany(LivroModel, {
-  as: 'livros',
-  foreignKey: 'aut_id',
-});
-
-LivroModel.belongsTo(CategoriaModel, {
-  as: 'categoria',
-  foreignKey: 'cat_id',
-});
-
-CategoriaModel.hasMany(LivroModel, {
-  as: 'livros',
-  foreignKey: 'cat_id',
-});
+LivroModel.belongsTo(CategoriaModel, { as: 'categoria', foreignKey: 'cat_id' });
+CategoriaModel.hasMany(LivroModel, { as: 'livros', foreignKey: 'cat_id' });
 
 export default LivroModel;

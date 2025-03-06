@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import Controller from './Controller';
-import Livro from '../models/Livro';
 import Autor from '../models/Autor';
 import Categoria from '../models/Categoria';
+import Controller from './Controller';
+import Livro from '../models/Livro';
 import NotFoundError from '../errors/NotFoundError';
 
 class LivroController extends Controller<Livro> {
@@ -10,7 +10,11 @@ class LivroController extends Controller<Livro> {
     super(Livro);
   }
 
-  async listarLivrosPorEditora(req: Request, res: Response, next: NextFunction) {
+  async listarLivrosPorEditora(
+    req: Request, 
+    res: Response, 
+    next: NextFunction,
+  ) {
     try {
       const { editora } = req.query;
 
@@ -27,6 +31,7 @@ class LivroController extends Controller<Livro> {
       });
 
       if (!livros.length) throw new NotFoundError('Livros não encontrados');
+      
       res.status(200).send(livros);
     } catch (error) {
       next(error);
